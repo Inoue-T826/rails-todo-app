@@ -1,0 +1,30 @@
+<% provide(:title, @category.name) %>
+
+<h1><%= @category.name %>の詳細</h1>
+
+<p>期限: <%= @category.deadline.strftime("%Y/%m/%d") %></p>
+
+<% if @todos.present? %>  <!-- @todosが存在する場合のみ表示 -->
+  <table>
+    <thead>
+      <tr>
+        <th>ToDo名</th>
+        <th>ステータス</th>
+        <th>期限</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @todos.each do |todo| %>
+        <tr>
+          <td><%= todo.name %></td>
+          <td><%= todo.status %></td>
+          <td><%= todo.deadline.strftime("%Y/%m/%d") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>このカテゴリにはまだToDoがありません。</p>
+<% end %>
+
+<%= link_to 'カテゴリ一覧に戻る', user_home_path(current_user) %>

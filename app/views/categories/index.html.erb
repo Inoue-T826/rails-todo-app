@@ -1,0 +1,23 @@
+<% provide(:title, "Home") %>
+<h1><%= current_user.email %>さんのカテゴリ一覧</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>カテゴリ名</th>
+      <th>ステータス</th>
+      <th>期限</th>
+    </tr>
+  </thead>
+  <tbody>
+   <% @categories.each do |category| %>
+    <tr>
+      <td><%= link_to category.name, category_path(category) %></td>
+      <td><%= category.deadline.strftime("%Y/%m/%d") %></td>
+      <td><%= category.todos.any? ? "作業中" : "完了" %></td>
+    </tr>
+   <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'カテゴリ作成', new_category_path %>
