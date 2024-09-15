@@ -1,6 +1,8 @@
 <% provide(:title, "Home") %>
 <h1><%= current_user.email %>さんのカテゴリ一覧</h1>
 
+<%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false, confirm: "ログアウトしますか？" } %>
+
 <table>
   <thead>
     <tr>

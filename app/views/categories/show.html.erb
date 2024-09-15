@@ -11,20 +11,52 @@
         <th>ToDo名</th>
         <th>ステータス</th>
         <th>期限</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
       <% @todos.each do |todo| %>
         <tr>
-          <td><%= todo.name %></td>
-          <td><%= todo.status %></td>
-          <td><%= todo.deadline.strftime("%Y/%m/%d") %></td>
+          <td>
+            <!-- 更新用フォーム -->
+            <%= form_with(model: [@category, todo], local: true, method: :patch) do |form| %>
+              <%= form.text_field :name, value: todo.name %>
+          </td>
+          <td>
+              <%= form.select :status, ["未完了", "作業中", "完了"], selected: todo.status %>
+          </td>
+          <td>
+              <%= form.date_field :deadline, value: todo.deadline %>
+          </td>
+          <td>
+              <%= form.submit "更新" %>
+            <% end %>
+            
+            <!-- 削除用ボタンは別フォームで定義 -->
+            <%= button_to "削除", category_todo_path(@category, todo), method: :delete, data: { confirm: "このToDoを削除しますか？" } %>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
   <p>このカテゴリにはまだToDoがありません。</p>
+<% end %>
+
+<h2>新しいTodoを追加</h2>
+
+<%= form_with(model: [@category, @category.todos.build], local: true) do |form| %>
+  <div>
+    <%= form.label :name, "Todo名" %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :deadline, "期限" %>
+    <%= form.date_field :deadline, required: true %>
+  </div>
+
+  <%= form.submit "Todoを追加" %>
 <% end %>
 
 <%= link_to 'カテゴリ一覧に戻る', user_home_path(current_user) %>

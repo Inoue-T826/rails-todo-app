@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'todos/index'
   root "sessions#new"
 
   get "login", to: "sessions#new"     
@@ -12,6 +11,6 @@ Rails.application.routes.draw do
   get "users/:id/home", to: "categories#index", as: "user_home"
 
   resources :categories, only: [:index, :new, :create, :show] do
-    resources :todos, only: [:index] 
+    resources :todos, only: [:index, :create, :update, :destroy] 
   end
 end 
