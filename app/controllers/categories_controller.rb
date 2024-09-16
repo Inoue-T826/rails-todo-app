@@ -11,10 +11,29 @@ class CategoriesController < ApplicationController
  end
     
  def new
+    @category = Category.new
+    5.times { @category.todos.build } 
  end
 
  def create
+    @category = current_user.categories.build(category_params)
+    
+    if @category.save
+      redirect_to user_home_path(current_user), notice: "カテゴリが作成されました。"
+    else
+      flash.now[:alert] = @category.errors.full_messages.join(", ")
+      render :new
+    end
  end
+
+ def destroy
+    @category = current_user.categories.find(params[:id])
+    if @category.destroy
+      redirect_to user_home_path(current_user), notice: "カテゴリが削除されました。"
+    else
+      redirect_to user_home_path(current_user), alert: "カテゴリの削除に失敗しました。"
+    end
+  end
 
  def show
     @category = Category.find(params[:id])  # URLからカテゴリを取得
@@ -46,7 +65,7 @@ class CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:name,:status, :deadline)
+    params.require(:category).permit(:name, :status, :deadline, todos_attributes: [:name, :deadline])
   end
 
 end

@@ -1,2 +1,41 @@
-<% provide(:title, "Make") %>
+<% if flash[:alert] %>
+  <div class="alert alert-warning">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+<% provide(:title, "Create Category") %>
+
 <h1>新しいカテゴリを作成</h1>
+
+<%= form_with(model: @category, local: true, class: "form-group") do |form| %>
+  <div class="form-field">
+    <%= form.label :name, "カテゴリ名" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :deadline, "カテゴリの期限" %>
+    <%= form.date_field :deadline, class: "form-control", required: true %>
+  </div>
+
+  <h2>Todoを追加</h2>
+
+  <div id="todos">
+    <%= form.fields_for :todos do |todo_form| %>
+      <div class="todo-fields">
+        <%= todo_form.label :name, "Todo名" %>
+        <%= todo_form.text_field :name, class: "form-control" %>
+
+        <%= todo_form.label :deadline, "Todoの期限" %>
+        <%= todo_form.date_field :deadline, class: "form-control" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit "カテゴリを追加", class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<%= link_to 'カテゴリ一覧に戻る', user_home_path(current_user), class: "btn btn-secondary" %>

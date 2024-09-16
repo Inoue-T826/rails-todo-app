@@ -1,23 +1,23 @@
 <% provide(:title, "Signup") %>
 <h1>サインアップ</h1>
 
-<%= form_with model: @user, local: true do |form| %>
-  <div>
+<%= form_with model: @user, local: true, class: "form-group" do |form| %>
+  <div class="form-field">
     <%= form.label :email %>
-    <%= form.email_field :email, required: true %>
+    <%= form.email_field :email, class: "form-control", required: true %>
   </div>
 
-  <div>
+  <div class="form-field">
     <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
+    <%= form.password_field :password, class: "form-control", required: true %>
   </div>
 
-  <div>
+  <div class="form-field">
     <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, required: true %>
+    <%= form.password_field :password_confirmation, class: "form-control", required: true %>
   </div>
 
-  <div>
-    <%= form.submit "サインアップ" %>
-  </div>
+  <%= form.submit "サインアップ", class: "btn btn-primary" %>
 <% end %>
+
+<%= link_to "ログインページに戻る", login_path, class: "btn btn-secondary" %>

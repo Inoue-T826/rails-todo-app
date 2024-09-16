@@ -1,25 +1,35 @@
 <% provide(:title, "Home") %>
-<h1><%= current_user.email %>さんのカテゴリ一覧</h1>
 
-<%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false, confirm: "ログアウトしますか？" } %>
+<!-- ログアウトボタン -->
+<div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+  <%= button_to "ログアウト", logout_path, method: :delete, data: { turbo: false, confirm: "ログアウトしますか？" }, class: "btn btn-warning" %>
+</div>
 
-<table>
-  <thead>
+<!-- カテゴリの一覧を表示するテーブル -->
+<table class="table table-bordered table-hover">
+  <thead class="table-dark">
     <tr>
       <th>カテゴリ名</th>
       <th>ステータス</th>
       <th>期限</th>
+      <th>操作</th>
     </tr>
   </thead>
   <tbody>
-   <% @categories.each do |category| %>
-    <tr>
-      <td><%= link_to category.name, category_path(category) %></td>
-      <td><%= category.deadline.strftime("%Y/%m/%d") %></td>
-      <td><%= category.todos.any? ? "作業中" : "完了" %></td>
-    </tr>
-   <% end %>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= link_to category.name, category_path(category), class: "text-info" %></td>
+        <td><%= category.status %></td>
+        <td><%= category.deadline.strftime("%Y/%m/%d") %></td>
+        <td>
+          <%= button_to "削除", category_path(category), method: :delete, data: { confirm: "本当にカテゴリを削除しますか？" }, class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
-<%= link_to 'カテゴリ作成', new_category_path %>
+<!-- カテゴリ作成リンク -->
+<div style="margin-top: 20px;">
+  <%= link_to 'カテゴリ作成', new_category_path, class: "btn btn-success" %>
+</div>

@@ -8,9 +8,11 @@ Rails.application.routes.draw do
   get "signup", to: "users#new"
   post "signup", to: "users#create"
 
+  resources :users, only: [:new, :create]
+
   get "users/:id/home", to: "categories#index", as: "user_home"
 
-  resources :categories, only: [:index, :new, :create, :show, :update] do
+  resources :categories, only: [:index, :new, :create, :show, :update, :destroy] do
     resources :todos, only: [:index, :create, :update, :destroy] 
   end
 end 
