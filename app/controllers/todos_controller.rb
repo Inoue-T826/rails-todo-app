@@ -8,13 +8,18 @@ class TodosController < ApplicationController
 
   def create
     @category = Category.find(params[:category_id])
-    @todo = @category.todos.build(todo_params)  # カテゴリに紐づけてTodoを作成
-    @todo.status = "未完了"  # デフォルトのステータスを「未完了」に設定
+    @todo = @category.todos.build(todo_params)  
+    @todo.status = "未完了"  
 
     if @todo.save
+      if @todo.deadline > @category.deadline
+        flash[:alert] = "警告: Todoの期限がカテゴリの期限より遅れています。"
+      end
       redirect_to category_path(@category), notice: "Todoが追加されました。"
     else
-      redirect_to category_path(@category), alert: "Todoの追加に失敗しました。"
+      @todos = @category.todos
+      flash.now[:alert] = @todo.errors.full_messages.join(", ")
+      render "categories/show"
     end
   end
 
@@ -23,9 +28,14 @@ class TodosController < ApplicationController
     @todo = @category.todos.find(params[:id])
 
     if @todo.update(todo_params)
+      if @todo.deadline > @category.deadline
+        flash[:alert] = "警告: Todoの期限がカテゴリの期限より遅れています。"
+      end
       redirect_to category_path(@category), notice: "Todoが更新されました。"
     else
-      redirect_to category_path(@category), alert: "Todoの更新に失敗しました。"
+      @todos = @category.todos
+      flash.now[:alert] = @todo.errors.full_messages.join(", ")
+      render "categories/show"
     end
   end
 

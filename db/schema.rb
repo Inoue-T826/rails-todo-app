@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_15_180532) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_16_024230) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.string "status"
+    t.string "status", default: "未完了"
     t.date "deadline"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
